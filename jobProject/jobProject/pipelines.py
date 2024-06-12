@@ -7,7 +7,7 @@ class SaveToPostgresql:
 
     def __init__(self):
         self.connection = psycopg2.connect(
-            host="localhost",
+            host="database",
             user="mohammadmirzaei",
             password="your_password",  # Replace with your actual password
             database="jobProject",

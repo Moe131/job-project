@@ -5,7 +5,7 @@ class PostgresqlQuery:
     def __init__(self):
         """ Establish a connection to postgreSQL"""
         self.connection = psycopg2.connect(
-            host="localhost",
+            host="database",
             user="mohammadmirzaei",
             password="your_password",  # Replace with your actual password
             database="jobProject",

@@ -15,7 +15,7 @@ class JobSpider(scrapy.Spider):
 
     def start_requests(self):
         # your code here
-        yield scrapy.Request(url='file:///Users/mohammadmirzaei/Documents/UCI/Resumes/Projects/s02.json', callback=self.parse_page)
+        yield scrapy.Request(url='file:///project/data/s02.json', callback=self.parse_page)
         
     def parse_page(self, response):
         # Load JSON data from the response
