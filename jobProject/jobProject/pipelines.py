@@ -1,5 +1,7 @@
 import psycopg2
 from itemadapter import ItemAdapter
+from datetime import datetime
+
 
 class SaveToPostgresql:
 
@@ -23,14 +25,15 @@ class SaveToPostgresql:
         self.connection.commit()
 
     def update_table_columns(self, column): # Here if the column does not exist in database, add it to the table
+        column_type = "TIMESTAMP WITH TIME ZONE" if "date" in column.lower() else "TEXT" # keeps the type of timestamp in database for entries that are date
         self.cursor.execute("""
             DO $$
             BEGIN
                 IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'raw_table' AND column_name = %s) THEN
-                    EXECUTE 'ALTER TABLE raw_table ADD COLUMN ' || quote_ident(%s) || ' TEXT';
+                    EXECUTE 'ALTER TABLE raw_table ADD COLUMN ' || quote_ident(%s) || ' ' || %s;
                 END IF;
             END $$;
-        """, (column, column))
+        """, (column, column,column_type))
         self.connection.commit()
 
     def process_item(self, item, spider):
@@ -38,7 +41,7 @@ class SaveToPostgresql:
         item_keys = data.keys()
         # for each column in job item , if it does not exist in database it will update the database table
         for column in item_keys:
-            self.update_table_columns(column)
+            self.update_table_columns(str(column))
 
         # Construct the sql insert statement 
         placeholders = ', '.join(['%s'] * len(item_keys))
@@ -55,3 +58,4 @@ class SaveToPostgresql:
         """ Close the connection to database in the destructor """
         self.cursor.close()
         self.connection.close()
+

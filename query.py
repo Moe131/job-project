@@ -26,7 +26,10 @@ class PostgresqlQuery:
         """ Run a query to get the column names in the database table raw_table"""
         # Querying column names from information_schema.columns
         self.cursor.execute("""
-            SELECT column_name FROM information_schema.columns WHERE table_name = 'raw_table';
+            SELECT column_name 
+            FROM information_schema.columns 
+            WHERE table_name = 'raw_table' 
+            ORDER BY ordinal_position;;
         """)
         return self.cursor.fetchall()
 
@@ -45,6 +48,8 @@ def createCSV(database, file_name):
 
 
 if __name__ == "__main__":
+    csv_file_path = "data.csv"
     database = PostgresqlQuery()
-    createCSV(database, "data.csv")
+    createCSV(database, csv_file_path)
+    print(f"csv file {csv_file_path} was created.")
 
