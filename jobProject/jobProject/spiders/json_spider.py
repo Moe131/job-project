@@ -6,7 +6,7 @@ class JobSpider(scrapy.Spider):
     name = 'job_spider'
     custom_settings = {
     	'ITEM_PIPELINES': {
-        		'jobProject.pipelines.JobprojectPipeline': 300,
+        		'jobProject.pipelines.SaveToPostgresql': 300,
     	},
 	}
     
