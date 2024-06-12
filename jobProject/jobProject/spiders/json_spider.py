@@ -4,6 +4,11 @@ from jobProject.items import JobprojectItem
 
 class JobSpider(scrapy.Spider):
     name = 'job_spider'
+    custom_settings = {
+    	'ITEM_PIPELINES': {
+        		'jobProject.pipelines.JobprojectPipeline': 300,
+    	},
+	}
     
     def __init__(self, **kwargs):
         pass
@@ -15,11 +20,12 @@ class JobSpider(scrapy.Spider):
     def parse_page(self, response):
         # Load JSON data from the response
         data = json.loads(response.text)
+        item = JobprojectItem()
         # Loop over the jobs in the JSON data
         for job in data['jobs']:
             job_data = job['data']
-            item = {}
+            dict = {}
             for key in job_data.keys():
-                item[key] = job_data[key]
-
+                dict[key] = job_data[key]
+            item["data"] = dict;
             yield item
