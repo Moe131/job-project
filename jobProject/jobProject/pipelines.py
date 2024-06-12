@@ -2,7 +2,7 @@ import psycopg2
 from itemadapter import ItemAdapter
 from datetime import datetime
 
-
+# Pipeline class to save each job item into database
 class SaveToPostgresql:
 
     def __init__(self):
@@ -16,7 +16,7 @@ class SaveToPostgresql:
         self.cursor = self.connection.cursor()
         self.create_raw_table()  # Create the table if it doesn't exist
 
-    def create_raw_table(self):
+    def create_raw_table(self): 
         self.cursor.execute("""
             CREATE TABLE IF NOT EXISTS raw_table (
                 jobid SERIAL PRIMARY KEY

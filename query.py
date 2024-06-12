@@ -38,6 +38,7 @@ class PostgresqlQuery:
         self.connection.close()
 
 def createCSV(database, file_name):
+    """ Retrieves data from database and organizes it in the CSV file"""
     columns= [tup[0] for tup in database.query_column_names()]
     data = database.query_data()
     with open(file_name, 'w') as f:
